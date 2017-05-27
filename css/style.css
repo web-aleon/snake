@@ -1,0 +1,17 @@
+*{box-sizing: border-box;}
+
+#board{
+	position: relative;
+	width: 400px;
+	height: 300px;
+	margin: 0 auto;
+	border: 2px solid black;
+}
+
+#snakeHead{
+	width: 10px;
+	height: 10px;
+	background-color: #f0f;
+	position: absolute;
+	
+}
