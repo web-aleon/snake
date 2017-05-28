@@ -5,13 +5,15 @@
 	width: 400px;
 	height: 300px;
 	margin: 0 auto;
-	border: 2px solid black;
+	border: 5px solid black;
 }
 
-#snakeHead{
+#snakeHead, .body, .food{
 	width: 10px;
 	height: 10px;
 	background-color: #f0f;
 	position: absolute;
-	
+}
+.food{
+	background-color: #555;
 }
