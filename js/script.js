@@ -11,6 +11,8 @@ var board = document.getElementById('board'),
 		moved : false // Проверка, вызвана ли direction() в данной итерации gameCycle(). За одну итерацию можно сменить направление 1 раз
 	},
 	food = false; // Еда пока не существует, потом сюда будет записывать элемент
+	vMovePause = 0; // Запоминаем сдвиг на время паузы
+	hMovePause = 0;
 
 
 /*Рандомное целое от min до max(не включая max)*/
@@ -41,42 +43,57 @@ function basicPosition(){
 }
 /*Определение направления движения*/
 function direction(e) {
-	if (!snake.moved){
+	if (vMovePause || hMovePause){
+		snake.vMove = vMovePause;
+		snake.hMove = hMovePause;
+		vMovePause = hMovePause = 0;
+	}else if (!snake.moved){
 		switch (e.key){
 			case 'ArrowUp':{
-				if(snake.vMove == 0){
+				if(!snake.vMove && !snake.hMove){
+					snake.vMove = -10;
+				}else if(snake.vMove == 0){
 					snake.hMove = 0;
 					snake.vMove = -10;
 				} 
 				break;
 			}
 			case 'ArrowRight':{
-				if(snake.hMove == 0){
+				if(!snake.vMove && !snake.hMove){
+					snake.vMove = -10;
+				}else if(snake.hMove == 0){
 					snake.vMove = 0;
 					snake.hMove = 10;
 				} 
 				break;
 			}
 			case 'ArrowDown':{
-				if(snake.vMove == 0){
+				if(!snake.vMove && !snake.hMove){
+					snake.vMove = -10;
+				}else if(snake.vMove == 0){
 					snake.hMove = 0;
 					snake.vMove = 10;
 				} 
 				break;
 			}
 			case 'ArrowLeft':{
-				if(snake.hMove == 0){
+				if(!snake.vMove && !snake.hMove){
+					snake.vMove = -10;
+				}else if(snake.hMove == 0){
 					snake.vMove = 0;
 					snake.hMove = -10;
 				} 
 				break;
 			}
 			case ' ':{
+				vMovePause = snake.vMove;
+				hMovePause = snake.hMove;
 				snake.vMove = 0;
 				snake.hMove = 0;
 				break;
 			}
 		}
+
 		snake.moved = true;
 	}
 }
