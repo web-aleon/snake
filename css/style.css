@@ -17,3 +17,10 @@
 .food{
 	background-color: #555;
 }
+#score{
+	text-align: center;
+}
+#playAgain{
+	display: block;
+	margin: 20px auto;
+}

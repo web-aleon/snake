@@ -1,5 +1,8 @@
 var board = document.getElementById('board'),
-	gameStarted = false; // (не сделано)
+	scoreElem = document.getElementById('score'),
+	score = 0,
+	playAgain = document.getElementById('playAgain'),
+	gameStarted = false, // (не сделано)
 	snake = {
 		vMove : 0, // сдвиг за итерацию gameCycle() по вертикали
 		hMove : 0, // сдвиг за итерацию gameCycle() по горизонтали
@@ -10,8 +13,8 @@ var board = document.getElementById('board'),
 		basicbodylength: 3, //Базовая длина тела змейки
 		moved : false // Проверка, вызвана ли direction() в данной итерации gameCycle(). За одну итерацию можно сменить направление 1 раз
 	},
-	food = false; // Еда пока не существует, потом сюда будет записывать элемент
-	vMovePause = 0; // Запоминаем сдвиг на время паузы
+	food = false, // Еда пока не существует, потом сюда будет записывать элемент
+	vMovePause = 0, // Запоминаем сдвиг на время паузы
 	hMovePause = 0;
 
 
@@ -28,6 +31,7 @@ function basicPosition(){
 	snake.top = snake.head.style.top = (Math.floor(board.clientHeight/20)*10 - 20) + 'px';
 	snake.left = snake.head.style.left = (Math.floor(board.clientWidth/20)*10) + 'px';
 	board.appendChild(snake.head);
+	snake.body.length = snake.basicbodylength;
 	// добавляем тело змеи
 	for(var i = 0; i < snake.basicbodylength; i++){
 		snake.body[i] = document.createElement('div');
@@ -40,6 +44,9 @@ function basicPosition(){
 	}
 	// false здесь нам даст возможность играть при повторном запуске игры без перезагрузки страницы.
 	snake.moved = false;
+	snake.vMove = snake.hMove = vMovePause = hMovePause = 0;
+	food = false;	
+	scoreElem.innerHTML = score = 0;
 }
 /*Определение направления движения*/
 function direction(e) {
@@ -104,9 +111,7 @@ function move(){
 
 	
 	snake.top = snake.head.style.top = (elemTop + snake.vMove) + 'px';
-	// console.log('top - ', snakeHead.style.top);
 	snake.left = snake.head.style.left = (left + snake.hMove) + 'px';
-	// console.log('left - ', snakeHead.style.left);
 	
 	
 	for (var i = (snake.body.length - 1); i > 0; i--){
@@ -151,7 +156,6 @@ function foodRemove() {
 /*Увеличиваем змейку*/
 function addSnakeBody() {
 	snake.body[snake.body.length] = document.createElement('div');
-	console.log(snake.body[snake.body.length - 1]);
 	snake.body[snake.body.length - 1].classList.add('body');
 	snake.body[snake.body.length - 1].style.top = snake.body[snake.body.length - 2].style.top;
 	snake.body[snake.body.length - 1].style.left = snake.body[snake.body.length - 2].style.left;
@@ -185,6 +189,8 @@ function gameCycle(e) {
 				if ((snake.top == food.style.top) && (snake.left == food.style.left)){
 					foodRemove();
 					addSnakeBody();
+					score++;
+					scoreElem.innerHTML = score;
 				}
 			}else{
 				foodAdd();
@@ -198,6 +204,7 @@ function gameCycle(e) {
 
 document.addEventListener('keydown', direction);
 document.addEventListener('DOMContentLoaded', gameCycle);
+playAgain.addEventListener('click', basicPosition);
 
 
 
